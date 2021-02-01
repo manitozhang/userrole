@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guess.song.mapper.TbUserRoleMapper">
+
+    <resultMap id="getUserList" type="com.guess.song.entity.vo.UserRoleVO">
+        <id column="id" property="id"/>
+        <result column="account" property="user"/>
+        <result column="name" property="name"/>
+        <result column="contact" property="phone"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="data"/>
+        <collection property="role" ofType="com.guess.song.entity.vo.RoleVO">
+            <result property="id" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+            <result property="roleDesc" column="roleDesc"/>
+        </collection>
+
+    </resultMap>
+    <select id="getUserList" resultMap="getUserList">
+SELECT
+	tu.*,
+	tr.id as roleId,
+	tr.name as roleName,
+    tr.desc as roleDesc
+FROM
+	tb_user tu
+	LEFT JOIN tb_user_role tur ON tu.id = tur.user_id
+	LEFT JOIN tb_role tr ON tr.id = tur.role_id
+    </select>
+</mapper>
